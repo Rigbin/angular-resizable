@@ -56,7 +56,6 @@ export class MainComponent implements OnInit {
     const prevValue = prevSibling?.getBoundingClientRect()[m];
 
     console.log(direction, m, prevMin, nextMin, prevValue);
-    console.log(resizer.dataset['size']);
 
     const oldAfter = getComputedStyle(resizer).getPropertyValue(dividerVars.after);
     const oldLt = getComputedStyle(resizer).getPropertyValue(dividerVars.lt)
