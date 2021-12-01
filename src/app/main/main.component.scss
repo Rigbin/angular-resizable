@@ -4,38 +4,64 @@
 
 :host {
   --divider-size: 2px;
+  --divider-after: 10px;
+  --divider-lt: -3px;
   --min-five-calc: calc(5% - var(--divider-size));
   --min-five: var(--min-five-calc);
 }
 
 div.resizer {
+  position: relative;
   &[data-direction="horizontal"] {
     width: var(--divider-size);
     cursor: col-resize;
+    &::after {
+      height: 100%;
+      width: var(--divider-after);
+      left: var(--divider-lt);
+    }
   }
 
   &[data-direction="vertical"] {
     height: var(--divider-size);
     cursor: row-resize;
+    &::after {
+      height: var(--divider-after);
+      width: 100%;
+      top: var(--divider-lt);
+    }
+  }
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: 10;
+    // border: 2px solid red;
   }
 }
 
 #container {
+  overflow: hidden;
+  position: relative;
   flex-direction: column;
 
   #left-box {
+    position: relative;
     height: 10%;
     min-height: var(--min-five);
   }
 
   #right-box {
     min-height: var(--min-five);
+    position: relative;
     #right-container {
+      position: relative;
       flex-direction: column;
       height: 80%;
     }
 
     #right-below {
+      position: relative;
       height: 20%;
     }
   }

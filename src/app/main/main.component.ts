@@ -48,6 +48,7 @@ export class MainComponent implements OnInit {
     const nextSibling = resizer.nextElementSibling as HTMLElement;
     const direction = this.direction(resizer);
     const m = measurements[direction];
+    const vm = viewMeasures[direction];
 
     const prevMin = this.parseNum(getComputedStyle(prevSibling).getPropertyValue(`min-${m}`));
     const nextMin = this.parseNum(getComputedStyle(nextSibling).getPropertyValue(`min-${m}`));
@@ -55,6 +56,12 @@ export class MainComponent implements OnInit {
     const prevValue = prevSibling?.getBoundingClientRect()[m];
 
     console.log(direction, m, prevMin, nextMin, prevValue);
+    console.log(resizer.dataset['size']);
+
+    const oldAfter = getComputedStyle(resizer).getPropertyValue(dividerVars.after);
+    const oldLt = getComputedStyle(resizer).getPropertyValue(dividerVars.lt)
+    resizer.style.setProperty(dividerVars.after, `100${vm}`);
+    resizer.style.setProperty(dividerVars.lt, `-50${vm}`);
 
     const oldCursor = document.body.style.cursor;
     document.body.style.cursor = resizer.style.cursor;
@@ -75,6 +82,8 @@ export class MainComponent implements OnInit {
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
       document.body.style.cursor = oldCursor;
+      resizer.style.setProperty(dividerVars.after, oldAfter);
+      resizer.style.setProperty(dividerVars.lt, oldLt);
     }
 
     document.addEventListener('mousemove', mouseMoveHandler);
@@ -109,4 +118,14 @@ const breakpoints: BootstrapBreakPoints = {
 const measurements: { [key: string]: 'height' | 'width' } = {
   vertical: 'height',
   horizontal: 'width',
+};
+const viewMeasures: { [key: string]: 'vh' | 'vw' } = {
+  vertical: 'vh',
+  horizontal: 'vw',
+};
+
+const dividerVars = {
+  size: '--divider-size',
+  after: '--divider-after',
+  lt: '--divider-lt',
 };
